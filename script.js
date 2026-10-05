@@ -27,20 +27,21 @@ let obstacles = [];
 let collectibles = [];
 let particles = [];
 
-// Acompanha posição do mouse
-canvas.addEventListener('mousemove', (e) => {
+// Acompanha movimento do mouse
+window.addEventListener('mousemove', (e) => {
+  if (!isPlaying) return;
   const rect = canvas.getBoundingClientRect();
   player.targetX = e.clientX - rect.left;
   player.targetY = e.clientY - rect.top;
 });
 
-// Suporte a dispositivos de toque
-canvas.addEventListener('touchmove', (e) => {
-  e.preventDefault();
+// Suporte a toque para celulares
+window.addEventListener('touchmove', (e) => {
+  if (!isPlaying) return;
   const rect = canvas.getBoundingClientRect();
   player.targetX = e.touches[0].clientX - rect.left;
   player.targetY = e.touches[0].clientY - rect.top;
-}, { passive: false });
+}, { passive: true });
 
 function spawnObstacle() {
   const radius = Math.random() * 15 + 10;
@@ -93,11 +94,10 @@ function update() {
 
   frameCount++;
 
-  // Suavização do movimento do jogador
+  // Movimento suave da nave
   player.x += (player.targetX - player.x) * 0.15;
   player.y += (player.targetY - player.y) * 0.15;
 
-  // Gerar inimigos e colecionáveis
   if (frameCount % Math.max(20, 60 - Math.floor(score / 20)) === 0) {
     spawnObstacle();
   }
@@ -105,7 +105,7 @@ function update() {
     spawnCollectible();
   }
 
-  // Atualizar partículas
+  // Partículas
   particles.forEach((p, index) => {
     p.x += p.vx;
     p.y += p.vy;
@@ -113,7 +113,7 @@ function update() {
     if (p.alpha <= 0) particles.splice(index, 1);
   });
 
-  // Atualizar colecionáveis
+  // Colecionáveis
   collectibles.forEach((c, index) => {
     const dist = Math.hypot(player.x - c.x, player.y - c.y);
     if (dist < player.radius + c.radius) {
@@ -124,7 +124,7 @@ function update() {
     }
   });
 
-  // Atualizar obstáculos
+  // Obstáculos / Colisão
   obstacles.forEach((o, index) => {
     o.x += o.vx;
     o.y += o.vy;
@@ -141,7 +141,6 @@ function update() {
       }
     }
 
-    // Remover obstáculos fora da tela
     if (o.x < -50 || o.x > canvas.width + 50 || o.y < -50 || o.y > canvas.height + 50) {
       obstacles.splice(index, 1);
     }
@@ -151,7 +150,7 @@ function update() {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Desenhar partículas
+  // Desenha partículas
   particles.forEach(p => {
     ctx.save();
     ctx.globalAlpha = p.alpha;
@@ -164,34 +163,27 @@ function draw() {
 
   if (!isPlaying) return;
 
-  // Desenhar colecionáveis
+  // Desenha itens
   collectibles.forEach(c => {
-    ctx.shadowBlur = 12;
-    ctx.shadowColor = c.color;
     ctx.fillStyle = c.color;
     ctx.beginPath();
     ctx.arc(c.x, c.y, c.radius, 0, Math.PI * 2);
     ctx.fill();
   });
 
-  // Desenhar obstáculos
+  // Desenha asteroides
   obstacles.forEach(o => {
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = o.color;
     ctx.fillStyle = o.color;
     ctx.beginPath();
     ctx.arc(o.x, o.y, o.radius, 0, Math.PI * 2);
     ctx.fill();
   });
 
-  // Desenhar jogador
-  ctx.shadowBlur = 15;
-  ctx.shadowColor = player.color;
+  // Desenha jogador
   ctx.fillStyle = player.color;
   ctx.beginPath();
   ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
   ctx.fill();
-  ctx.shadowBlur = 0;
 }
 
 function gameLoop() {
@@ -209,6 +201,7 @@ function startGame() {
   scoreEl.textContent = score;
   livesEl.textContent = lives;
   isPlaying = true;
+
   startScreen.classList.add('hidden');
   gameOverScreen.classList.add('hidden');
 }
@@ -219,7 +212,15 @@ function endGame() {
   gameOverScreen.classList.remove('hidden');
 }
 
-startBtn.addEventListener('click', startGame);
-restartBtn.addEventListener('click', startGame);
+// Escutadores diretos nos botões
+startBtn.onclick = function(e) {
+  e.stopPropagation();
+  startGame();
+};
+
+restartBtn.onclick = function(e) {
+  e.stopPropagation();
+  startGame();
+};
 
 requestAnimationFrame(gameLoop);
