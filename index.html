@@ -1,64 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Ice Cream - Bad Ice Cream de Matemática</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon Dodge - Arcade Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
-        <!-- CABEÇALHO DO JOGO -->
-        <header class="game-header">
-            <h1>🍦 MATH ICE CREAM 🧊</h1>
-            <div class="stats-bar">
-                <div class="stat-box">
-                    <span class="label">NÍVEL</span>
-                    <span id="level-val" class="value">1</span>
-                </div>
-                <div class="stat-box">
-                    <span class="label">PONTOS</span>
-                    <span id="score-val" class="value">0</span>
-                </div>
-                <div class="stat-box">
-                    <span class="label">VIDAS</span>
-                    <span id="lives-val" class="value">❤️❤️❤️</span>
-                </div>
-            </div>
-            <div class="target-box">
-                <span class="target-title">DESAFIO MATEMÁTICO:</span>
-                <span id="target-text" class="target-desc">Colete os números na ordem correta!</span>
-            </div>
-        </header>
+  <div class="game-container">
+    <div class="ui-header">
+      <div class="score-board">PONTOS: <span id="score">0</span></div>
+      <div class="lives-board">VIDAS: <span id="lives">3</span></div>
+    </div>
+    
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
 
-        <!-- TELA DO JOGO (CANVAS) -->
-        <div class="canvas-wrapper">
-            <canvas id="gameCanvas" width="640" height="512"></canvas>
-            
-            <!-- OVERLAY DE FIM DE JOGO / VITÓRIA -->
-            <div id="overlay" class="overlay hidden">
-                <h2 id="overlay-title">GAME OVER</h2>
-                <p id="overlay-msg">Você foi pego pelo monstro!</p>
-                <button id="restart-btn" onclick="game.restart()">JOGAR NOVAMENTE 🔄</button>
-            </div>
-        </div>
-
-        <!-- PAINEL DE CONTROLES E INSTRUÇÕES -->
-        <footer class="game-instructions">
-            <div class="controls-info">
-                <h3>🎮 Como Jogar:</h3>
-                <ul>
-                    <li><kbd>⬆️</kbd> <kbd>⬇️</kbd> <kbd>⬅️</kbd> <kbd>➡️️</kbd> : Mover o Picolé</li>
-                    <li><kbd>ESPAÇO</kbd> : Criar ou Quebrar Blocos de Gelo na sua frente</li>
-                </ul>
-            </div>
-            <div class="rules-info">
-                <h3>💡 Objetivo:</h3>
-                <p>Use a barra de espaço para trancar os monstros com gelo enquanto coleta os sorvetes numéricos certos para resolver a equação!</p>
-            </div>
-        </footer>
+    <div id="startScreen" class="overlay">
+      <h1>NEON DODGE</h1>
+      <p>Desvie dos asteroides e colete os orbes energéticos!</p>
+      <button id="startBtn">JOGAR</button>
     </div>
 
-    <script src="script.js"></script>
+    <div id="gameOverScreen" class="overlay hidden">
+      <h1 class="danger">GAME OVER</h1>
+      <p>Pontuação final: <span id="finalScore">0</span></p>
+      <button id="restartBtn">JOGAR NOVAMENTE</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
