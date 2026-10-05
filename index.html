@@ -3,26 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Neon Dodge - Arcade Game</title>
+  <title>Neon Dodge - Missão Espacial Educativa</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="game-container">
     <div class="ui-header">
       <div class="score-board">PONTOS: <span id="score">0</span></div>
+      <div class="shield-status">ESCUDO: <span id="shieldText">INATIVO</span></div>
       <div class="lives-board">VIDAS: <span id="lives">3</span></div>
     </div>
     
     <canvas id="gameCanvas" width="800" height="500"></canvas>
 
+    <!-- Tela Inicial -->
     <div id="startScreen" class="overlay">
-      <h1>NEON DODGE</h1>
-      <p>Desvie dos asteroides e colete os orbes energéticos!</p>
-      <button id="startBtn" type="button">JOGAR</button>
+      <h1>NEON DODGE: ESPAÇO & MATEMÁTICA</h1>
+      <p>Desvie dos asteroides, pegue os orbes e resolva os desafios para ativar seu escudo!</p>
+      <button id="startBtn" type="button">INICIAR MISSÃO</button>
     </div>
 
+    <!-- Modal do Desafio Educativo -->
+    <div id="quizScreen" class="overlay hidden">
+      <div class="quiz-box">
+        <h2 id="quizCategory">DESAFIO ESPACIAL</h2>
+        <p id="quizQuestion">Quanto é 7 x 8?</p>
+        <div id="quizOptions" class="options-grid"></div>
+        <p id="quizFeedback" class="feedback-text"></p>
+      </div>
+    </div>
+
+    <!-- Tela de Game Over -->
     <div id="gameOverScreen" class="overlay hidden">
-      <h1 class="danger">GAME OVER</h1>
+      <h1 class="danger">MISSÃO ENCERRADA</h1>
       <p>Pontuação final: <span id="finalScore">0</span></p>
       <button id="restartBtn" type="button">JOGAR NOVAMENTE</button>
     </div>
